@@ -24,18 +24,12 @@ def load_cond_model(model_path):
 
 
 
-MODEL_PATHS = {'general':'/models/general_best_acc_model.pth','kitchen':'/models/kitchen_best_acc_074','bathroom':'/models/bathroom_best_acc_075'}
-TYPE_NAMES = sorted(pd.read_csv('/labels/allin_labels.csv').roomType.unique())
-COND_NAMES = sorted(pd.read_csv('/labels/bathroom_labels.csv').condition.unique())
+MODEL_PATHS = {'general':'models/general_best_acc_086.pth','kitchen':'models/kitchen_best_acc_073.pth','bathroom':'models/bathroom_best_acc_076.pth'}
+TYPE_NAMES = sorted(pd.read_csv('labels/allin_labels.csv').roomType.unique())
+COND_NAMES = sorted(pd.read_csv('labels/bathroom_labels.csv').condition.unique())
 
 
-loaded_models = {
-    'general': torch.load(MODEL_PATHS['general'],map_location=torch.device('cpu')).eval(),
-    'bathroom': load_cond_model(MODEL_PATHS['bathroom']).eval(),
-    'kitchen': load_cond_model(MODEL_PATHS['kitchen']).eval()
-}
-
-
+loaded_models = {key: torch.load(value,map_location=torch.device('cpu')).eval() for key, value in MODEL_PATHS.items()}
 
 transform = transforms.Compose([
             transforms.Resize((224,224)),
